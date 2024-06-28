@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +36,25 @@ public class Product {
 		this.costPrice = costPrice;
 		this.salePrice = salePrice;
 	}
+	
+	public Product() {}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public double getCostPrice() {
+		return costPrice;
+	}
+
+	public double getSalePrice() {
+		return salePrice;
+	}
+	
+	
 
 }

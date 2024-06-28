@@ -11,6 +11,6 @@ public enum UserRole {
 	}
 	
 	public String getRole() {
-		return this.role;
+		return role;
 	}
 }
