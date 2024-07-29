@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Product {
 	
 	@Id
@@ -37,12 +39,26 @@ public class Product {
 		this.salePrice = salePrice;
 	}
 	
+	public Product(String id, String productName, double costPrice, double salePrice) {
+		this.id = id;
+		this.productName = productName;
+		this.costPrice = costPrice;
+		this.salePrice = salePrice;
+	}
+	public Product(String id) {
+		this.id = id;
+	}
+	
 	public Product() {}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getId() {
 		return id;
 	}
-
+	
 	public String getProductName() {
 		return productName;
 	}
@@ -53,6 +69,12 @@ public class Product {
 
 	public double getSalePrice() {
 		return salePrice;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", productName=" + productName + ", costPrice=" + costPrice + ", salePrice="
+				+ salePrice + "]";
 	}
 	
 	

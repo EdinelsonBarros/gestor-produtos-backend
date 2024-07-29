@@ -41,7 +41,8 @@ public class AuthenticationController {
 		
 		var  token = tokenService.generateToken((User)auth.getPrincipal());
 		
-		return ResponseEntity.ok(new LoginResponseDTO(token));
+		
+		return ResponseEntity.ok(new LoginResponseDTO(u.login(), token));
 		
 	}	
 	
@@ -56,7 +57,14 @@ public class AuthenticationController {
 		User newUser = new User(u.login(), encryptedPassword, u.role());
 		userRepository.save(newUser);
 		
-		return ResponseEntity.ok().build();
+		var userNamePassword = new UsernamePasswordAuthenticationToken(u.login(), u.password());
+		var auth = this.authenticationManager.authenticate(userNamePassword);
+		
+		var  token = tokenService.generateToken((User)auth.getPrincipal());
+		
+		
+		return ResponseEntity.ok(new LoginResponseDTO(u.login(), token));
+		
 	}
 	
 	

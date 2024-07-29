@@ -28,29 +28,33 @@ public class SecurityConfigurations {
 	
 	@Autowired
 	SecurityFilter securityFilter;
-	
+	/*
 	@Bean
 	public CorsConfigurationSource corsConfigurationSouce() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+		configuration.setAllowedOrigins(Arrays.asList("*"));
 		configuration.setAllowedMethods(Arrays.asList("*"));
+		configuration.getAllowCredentials()
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		
 		return source;
 	}
+	*/
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
-				.cors(cors -> cors.configurationSource(corsConfigurationSouce()))
+				.cors(Customizer.withDefaults())
 				.csrf(csrf -> csrf.disable())				
 				.sessionManagement(
 						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(autorize -> autorize
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/product/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/product/**").hasRole("USER")
 						.anyRequest().authenticated()
 						)
