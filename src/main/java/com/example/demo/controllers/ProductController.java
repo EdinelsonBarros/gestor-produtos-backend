@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +50,13 @@ public class ProductController {
 	
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity deleteProductById(@PathVariable("id") String id) {
-		
-		productRepository.deleteById(id);
-		return ResponseEntity.ok("Produto deletado");
+		Optional<Product> existingProduct = productRepository.findById(id);
+		if(existingProduct.isPresent()) {
+			productRepository.deleteById(id);
+			//System.out.println(existingProduct.get());
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }
