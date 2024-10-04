@@ -11,8 +11,5 @@ import com.example.demo.domain.product.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
 	
-	@Modifying
-    @Transactional
-	@Query(value = "DELETE FROM products WHERE id = ?1")
-	public void excluirPorId(String id);
+	
 }

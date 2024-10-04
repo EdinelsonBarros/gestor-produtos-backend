@@ -55,6 +55,18 @@ public class Product {
 		this.id = id;
 	}
 
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public void setCostPrice(double costPrice) {
+		this.costPrice = costPrice;
+	}
+
+	public void setSalePrice(double salePrice) {
+		this.salePrice = salePrice;
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -19,7 +19,7 @@ public class ProductService {
 		return p;
 	}
 	
-	public List<Product> findAll(Product p) {
+	public List<Product> findAll() {
 		return repository.findAll();
 	}
 	
