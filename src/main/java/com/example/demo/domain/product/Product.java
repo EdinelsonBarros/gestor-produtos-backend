@@ -1,10 +1,17 @@
 package com.example.demo.domain.product;
 
+
+import com.example.demo.domain.productCategory.ProductCategory;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,26 +31,25 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 	
-	
+	@NotNull
 	private String productName;
 	
-	
+	@NotNull
 	private double costPrice;
 	
-	
+	@NotNull
 	private double salePrice;
 	
-	public Product(String productName, double costPrice, double salePrice) {
-		this.productName = productName;
-		this.costPrice = costPrice;
-		this.salePrice = salePrice;
-	}
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "category_id")
+	private ProductCategory category;
 	
-	public Product(String id, String productName, double costPrice, double salePrice) {
+	public Product(String id, String productName, double costPrice, double salePrice, ProductCategory category) {
 		this.id = id;
 		this.productName = productName;
 		this.costPrice = costPrice;
 		this.salePrice = salePrice;
+		this.category = category;
 	}
 	public Product(String id) {
 		this.id = id;
@@ -82,11 +88,20 @@ public class Product {
 	public double getSalePrice() {
 		return salePrice;
 	}
+	
+
+	public ProductCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProductCategory category) {
+		this.category = category;
+	}
 
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", productName=" + productName + ", costPrice=" + costPrice + ", salePrice="
-				+ salePrice + "]";
+				+ salePrice + ", category=" + category +"]";
 	}
 	
 	

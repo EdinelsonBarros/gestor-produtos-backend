@@ -21,7 +21,7 @@ import com.example.demo.repositories.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
 	
 	@Autowired

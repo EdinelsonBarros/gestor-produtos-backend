@@ -28,19 +28,6 @@ public class SecurityConfigurations {
 	
 	@Autowired
 	SecurityFilter securityFilter;
-	/*
-	@Bean
-	public CorsConfigurationSource corsConfigurationSouce() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("*"));
-		configuration.getAllowCredentials()
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		
-		return source;
-	}
-	*/
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -57,7 +44,7 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/product/update/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/product/**").hasRole("USER")
-						//.requestMatchers( "/product/**").hasRole("USER")
+						.requestMatchers("/category/**").hasRole("USER")
 						.anyRequest().authenticated()
 						)
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

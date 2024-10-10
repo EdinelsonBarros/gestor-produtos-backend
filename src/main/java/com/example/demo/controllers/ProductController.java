@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.product.Product;
 import com.example.demo.domain.product.ProductDeleteDTO;
-import com.example.demo.domain.product.ProductReponseDTO;
+import com.example.demo.domain.product.ProductDTO;
 import com.example.demo.domain.product.ProductRequestDTO;
+import com.example.demo.domain.productCategory.ProductCategory;
+import com.example.demo.repositories.ProductCategoryRepository;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.ProductService;
 
@@ -31,17 +33,28 @@ public class ProductController {
 	ProductRepository productRepository;
 	
 	@Autowired
+	ProductCategoryRepository categoryRepository;
+	
+	@Autowired
 	ProductService productService;
 	
-	@PostMapping("/create")
-	public ResponseEntity createProduct(@RequestBody @Valid ProductRequestDTO p) {
-		Product newProduct = new Product(p.productName(), p.costPrice(), p.salePrice());
+	@PostMapping("/create/{category}")
+	public ResponseEntity createProduct(@PathVariable String category, @RequestBody @Valid ProductRequestDTO p) {
+		Optional<ProductCategory> categoryActual = categoryRepository.findById(category);
+		if(categoryActual.isPresent()) {
+		Product newProduct = new Product();
+		newProduct.setProductName(p.productName());
+		newProduct.setCostPrice(p.costPrice());
+		newProduct.setSalePrice(p.salePrice());
+		newProduct.setCategory(categoryActual.get());
 		productRepository.save(newProduct);
-		return ResponseEntity.ok(new ProductReponseDTO(newProduct));
+		return ResponseEntity.ok(new ProductDTO(newProduct));
+		}
+		return ResponseEntity.ok("Categoria não encontrada");
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity updateProduct(@PathVariable("id") String id, @RequestBody @Valid ProductReponseDTO p) {
+	public ResponseEntity updateProduct(@PathVariable("id") String id, @RequestBody @Valid ProductDTO p) {
 		Optional<Product> existingProduct = productRepository.findById(id);
 		if(existingProduct.isPresent()) {
 			existingProduct.get().setProductName(p.productName());
@@ -55,7 +68,7 @@ public class ProductController {
 	
 	@GetMapping("/findall")
 	public ResponseEntity findAllProduct() {
-		List<ProductReponseDTO> products = productRepository.findAll().stream().map(ProductReponseDTO::new).toList();
+		List<ProductDTO> products = productRepository.findAll().stream().map(ProductDTO::new).toList();
 		System.out.println(products);
 		return ResponseEntity.ok(products);
 	}
