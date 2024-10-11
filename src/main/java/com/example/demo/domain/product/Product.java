@@ -34,23 +34,34 @@ public class Product {
 	@NotNull
 	private String productName;
 	
+	private String description;
+	
 	@NotNull
 	private double costPrice;
 	
 	@NotNull
 	private double salePrice;
 	
+	private double stock;
+	
+	private String urlImage;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category_id")
 	private ProductCategory category;
 	
-	public Product(String id, String productName, double costPrice, double salePrice, ProductCategory category) {
-		this.id = id;
+	
+	public Product(@NotNull String productName, String description, @NotNull double costPrice,
+			@NotNull double salePrice, double stock, String urlImage, ProductCategory category) {
 		this.productName = productName;
+		this.description = description;
 		this.costPrice = costPrice;
 		this.salePrice = salePrice;
+		this.stock = stock;
+		this.urlImage = urlImage;
 		this.category = category;
 	}
+
 	public Product(String id) {
 		this.id = id;
 	}
@@ -98,10 +109,32 @@ public class Product {
 		this.category = category;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+	public double getStock() {
+		return stock;
+	}
+	public String getUrlImage() {
+		return urlImage;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public void setStock(double stock) {
+		this.stock = stock;
+	}
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
+	
+	
+	
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", productName=" + productName + ", costPrice=" + costPrice + ", salePrice="
-				+ salePrice + ", category=" + category +"]";
+		return "Product [id=" + id + ", productName=" + productName + ", description=" + description + ", costPrice="
+				+ costPrice + ", salePrice=" + salePrice + ", stock=" + stock + ", urlImage=" + urlImage + ", category="
+				+ category + "]";
 	}
 	
 	

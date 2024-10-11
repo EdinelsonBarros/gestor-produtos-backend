@@ -42,7 +42,7 @@ public class ProductController {
 	@PostMapping("/create")
 	public ResponseEntity createProduct(@RequestBody @Valid ProductRequestDTO p) {
 		Optional<ProductCategory> currentCategory = categoryRepository.findById(p.category());
-		if(currentCategory.get() != null) {
+		if(currentCategory.isPresent()) {
 			Product newProduct = new Product();
 			newProduct.setProductName(p.productName());
 			newProduct.setCostPrice(p.costPrice());
