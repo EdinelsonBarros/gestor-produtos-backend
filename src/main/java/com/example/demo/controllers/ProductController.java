@@ -42,16 +42,17 @@ public class ProductController {
 	@PostMapping("/create")
 	public ResponseEntity createProduct(@RequestBody @Valid ProductRequestDTO p) {
 		Optional<ProductCategory> currentCategory = categoryRepository.findById(p.category());
-		if(currentCategory.isPresent()) {
-		Product newProduct = new Product();
-		newProduct.setProductName(p.productName());
-		newProduct.setCostPrice(p.costPrice());
-		newProduct.setSalePrice(p.salePrice());
-		newProduct.setCategory(currentCategory.get());
-		productRepository.save(newProduct);
-		return ResponseEntity.ok(new ProductResponseDTO(newProduct));
+		if(currentCategory.get() != null) {
+			Product newProduct = new Product();
+			newProduct.setProductName(p.productName());
+			newProduct.setCostPrice(p.costPrice());
+			newProduct.setSalePrice(p.salePrice());
+			newProduct.setCategory(currentCategory.get());
+			productRepository.save(newProduct);
+			return ResponseEntity.ok(new ProductResponseDTO(newProduct));
 		}
-		return ResponseEntity.ok("Categoria não encontrada");
+		return ResponseEntity.ok("Erro ao cadastrar o produto.");
+		
 	}
 	
 	@PutMapping("/update/{id}")
