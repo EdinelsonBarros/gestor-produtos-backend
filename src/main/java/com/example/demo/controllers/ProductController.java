@@ -18,6 +18,7 @@ import com.example.demo.domain.product.Product;
 import com.example.demo.domain.product.ProductDeleteDTO;
 import com.example.demo.domain.product.ProductDTO;
 import com.example.demo.domain.product.ProductRequestDTO;
+import com.example.demo.domain.product.ProductResponseDTO;
 import com.example.demo.domain.productCategory.ProductCategory;
 import com.example.demo.repositories.ProductCategoryRepository;
 import com.example.demo.repositories.ProductRepository;
@@ -38,17 +39,17 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
-	@PostMapping("/create/{category}")
-	public ResponseEntity createProduct(@PathVariable String category, @RequestBody @Valid ProductRequestDTO p) {
-		Optional<ProductCategory> categoryActual = categoryRepository.findById(category);
-		if(categoryActual.isPresent()) {
+	@PostMapping("/create")
+	public ResponseEntity createProduct(@RequestBody @Valid ProductRequestDTO p) {
+		Optional<ProductCategory> currentCategory = categoryRepository.findById(p.category());
+		if(currentCategory.isPresent()) {
 		Product newProduct = new Product();
 		newProduct.setProductName(p.productName());
 		newProduct.setCostPrice(p.costPrice());
 		newProduct.setSalePrice(p.salePrice());
-		newProduct.setCategory(categoryActual.get());
+		newProduct.setCategory(currentCategory.get());
 		productRepository.save(newProduct);
-		return ResponseEntity.ok(new ProductDTO(newProduct));
+		return ResponseEntity.ok(new ProductResponseDTO(newProduct));
 		}
 		return ResponseEntity.ok("Categoria não encontrada");
 	}
