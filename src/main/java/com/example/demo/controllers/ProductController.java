@@ -45,9 +45,13 @@ public class ProductController {
 		if(currentCategory.isPresent()) {
 			Product newProduct = new Product();
 			newProduct.setProductName(p.productName());
+			newProduct.setCategory(currentCategory.get());
+			newProduct.setDescription(p.description());
 			newProduct.setCostPrice(p.costPrice());
 			newProduct.setSalePrice(p.salePrice());
-			newProduct.setCategory(currentCategory.get());
+			newProduct.setStock(p.stock());
+			newProduct.setUrlImage(p.urlImage());
+			
 			productRepository.save(newProduct);
 			return ResponseEntity.ok(new ProductResponseDTO(newProduct));
 		}
@@ -62,9 +66,13 @@ public class ProductController {
 		
 		if(existingProduct.isPresent()) {
 			existingProduct.get().setProductName(p.productName());
+			existingProduct.get().setDescription(p.description());
 			existingProduct.get().setCategory(existingCategory.get());
 			existingProduct.get().setCostPrice(p.costPrice());
 			existingProduct.get().setSalePrice(p.salePrice());
+			existingProduct.get().setStock(p.stock());
+			existingProduct.get().setUrlImage(p.urlImage());
+			
 			productRepository.save(existingProduct.get());
 			return ResponseEntity.ok(existingProduct.get());
 		}
