@@ -55,10 +55,13 @@ public class ProductController {
 	}
 	
 	@PutMapping("/update/{id}")
-	public ResponseEntity updateProduct(@PathVariable("id") String id, @RequestBody @Valid ProductDTO p) {
+	public ResponseEntity updateProduct(@PathVariable("id") String id, @RequestBody @Valid ProductRequestDTO p) {
 		Optional<Product> existingProduct = productRepository.findById(id);
+		Optional<ProductCategory> existingCategory = categoryRepository.findById(p.category());
+		
 		if(existingProduct.isPresent()) {
 			existingProduct.get().setProductName(p.productName());
+			existingProduct.get().setCategory(existingCategory.get());
 			existingProduct.get().setCostPrice(p.costPrice());
 			existingProduct.get().setSalePrice(p.salePrice());
 			productRepository.save(existingProduct.get());
@@ -69,7 +72,7 @@ public class ProductController {
 	
 	@GetMapping("/findall")
 	public ResponseEntity findAllProduct() {
-		List<ProductDTO> products = productRepository.findAll().stream().map(ProductDTO::new).toList();
+		List<ProductResponseDTO> products = productRepository.findAll().stream().map(ProductResponseDTO::new).toList();
 		System.out.println(products);
 		return ResponseEntity.ok(products);
 	}
